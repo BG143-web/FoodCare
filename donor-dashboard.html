@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donor Dashboard - FoodCare</title>
+  <meta name="description"
+    content="Manage your surplus food donations, pending community requests, and donation history.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+
+<body id="donor-dashboard-root">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="donor-dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="#recent-donations">My Food</a></li>
+        <li><a href="requests.html">Requests</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Rendered by main.js with role switch and logout buttons -->
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header & Welcome -->
+  <header class="dash-header">
+    <div class="container dash-header-content">
+      <div class="dash-title-group">
+        <div class="dash-subtitle">
+          <span class="role-tag">Donor Portal</span>
+          <span>• Community Food Provider</span>
+        </div>
+        <h1>Welcome, <span id="donor-welcome-name"></span></h1>
+        <p style="margin: 0; color: var(--text-muted);">Manage surplus inventory, respond to community requests, and
+          save meals.</p>
+      </div>
+
+      <div>
+        <button onclick="window.openModal('add-food-modal')" class="btn btn-primary btn-lg">
+          <span style="font-size: 1.2rem; line-height: 1;">+</span> Add Surplus Food
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Statistics Cards Grid -->
+      <section class="stats-grid" aria-label="Donor Performance Metrics">
+        <div class="stat-card">
+          <div class="stat-icon">🍲</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-total-donations">0</span>
+            <span class="stat-label">Total Donations</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-available-food">0</span>
+            <span class="stat-label">Available Food</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon pending">⏳</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-pending-requests">0</span>
+            <span class="stat-label">Pending Requests</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon completed">📦</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-completed-donations">0</span>
+            <span class="stat-label">Completed Handed Over</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions Bar -->
+      <section class="actions-card">
+        <div class="actions-text">
+          <h3>Quick Management Actions</h3>
+          <p>Easily publish new surplus food, audit recipient claims, or view impact reports.</p>
+        </div>
+        <div class="actions-btn-group">
+          <button onclick="window.openModal('add-food-modal')" class="btn btn-primary">
+            + Post Food Donation
+          </button>
+          <a href="requests.html" class="btn btn-outline">
+            View Requests
+          </a>
+          <a href="history.html" class="btn btn-secondary">
+            Donation History
+          </a>
+        </div>
+      </section>
+
+      <!-- Recent Food Donations Section -->
+      <section id="recent-donations" style="margin-bottom: 4rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Active & Recent Food Listings</h2>
+            <p style="margin: 0; color: var(--text-muted);">Surplus food you have made available for pickup.</p>
+          </div>
+          <button onclick="window.openModal('add-food-modal')" class="btn btn-sm btn-outline">
+            + Add New
+          </button>
+        </div>
+
+        <!-- Dynamic Food Grid -->
+        <div id="donor-recent-foods" class="food-grid">
+          <!-- Rendered dynamically by donor.js -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Add Surplus Food Modal Dialog -->
+  <div id="add-food-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title">Add Surplus Food</h3>
+        <button class="modal-close" onclick="window.closeModal('add-food-modal')"
+          aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="add-food-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="food-name" class="form-label">Food Title / Description <span class="required">*</span></label>
+            <input type="text" id="food-name" class="form-control" placeholder="e.g. Steamed Rice & Dal Makhani"
+              required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="food-category" class="form-label">Category <span class="required">*</span></label>
+              <select id="food-category" class="form-control" required>
+                <option value="Cooked Food">Cooked Food</option>
+                <option value="Bakery">Bakery & Breads</option>
+                <option value="Fresh Produce">Fresh Produce (Fruits/Veg)</option>
+                <option value="Dairy">Dairy & Milk Products</option>
+                <option value="Packaged Food">Packaged / Dry Groceries</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="food-quantity" class="form-label">Quantity / Portions <span class="required">*</span></label>
+              <input type="text" id="food-quantity" class="form-control" placeholder="e.g. 20 Meals / 15 kg" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="food-location" class="form-label">Pickup Location / City <span
+                  class="required">*</span></label>
+              <input type="text" id="food-location" class="form-control" placeholder="e.g. Kothrud, Pune" required>
+            </div>
+
+            <div class="form-group">
+              <label for="food-available-until" class="form-label">Available Until</label>
+              <input type="text" id="food-available-until" class="form-control" placeholder="e.g. Today, 9:00 PM"
+                value="Today, 9:00 PM">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="food-notes" class="form-label">Special Handling / Dietary Notes</label>
+            <textarea id="food-notes" class="form-control" rows="3"
+              placeholder="e.g. Freshly packed vegetarian meals. Keep upright during transport."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal('add-food-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">List Surplus Food</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top: none;">
+      <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+      <div>
+        <a href="index.html" style="color: #6ee7b7; margin-right: 1.25rem;">Home</a>
+        <a href="history.html" style="color: #6ee7b7; margin-right: 1.25rem;">History</a>
+        <a href="profile.html" style="color: #6ee7b7;">Profile</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/food.js"></script>
+  <script src="/js/donor.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+
+</html>

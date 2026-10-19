@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Requests - FoodCare</title>
+  <meta name="description" content="Review, accept, and track surplus food requests on FoodCare.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="donor-dashboard.html" id="nav-dashboard-link">Donor Dashboard</a></li>
+        <li><a href="requests.html" class="active">Requests</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Injected by main.js -->
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header -->
+  <header class="dash-header">
+    <div class="container dash-header-content">
+      <div class="dash-title-group">
+        <div class="dash-subtitle">
+          <span class="role-tag" id="requests-role-tag">Food Donor</span>
+          <span id="requests-role-subtext">• Incoming Requests</span>
+        </div>
+        <h1>Food Request Management</h1>
+        <p style="margin: 0; color: var(--text-muted);" id="requests-page-desc">Audit incoming surplus food claims,
+          manage approvals, and
+          coordinate pickup logistics.</p>
+      </div>
+
+      <!-- Authenticated Account Role Display (Set by backend session) -->
+      <div id="role-perspective-container"
+        style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-page); padding: 0.4rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+        <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Account:</span>
+        <span id="user-role-indicator" class="badge badge-available"
+          style="font-size: 0.85rem; padding: 0.35rem 0.7rem; font-weight: 600;"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Status Filter Tabs -->
+      <nav class="tabs-nav" aria-label="Request Status Tabs">
+        <button class="tab-btn active" data-status="all">All Requests <span class="tab-badge"
+            id="badge-all">0</span></button>
+        <button class="tab-btn" data-status="Pending">Pending <span class="tab-badge"
+            id="badge-pending">0</span></button>
+        <button class="tab-btn" data-status="Accepted">Accepted <span class="tab-badge"
+            id="badge-accepted">0</span></button>
+        <button class="tab-btn" data-status="Completed">Completed <span class="tab-badge"
+            id="badge-completed">0</span></button>
+        <button class="tab-btn" data-status="Rejected">Rejected <span class="tab-badge"
+            id="badge-rejected">0</span></button>
+      </nav>
+
+      <!-- Requests Table Container -->
+      <div class="table-card">
+        <div class="table-header-box">
+          <h3 id="table-view-heading">Incoming Requests for Surplus Food</h3>
+          <span style="font-size: 0.85rem; color: var(--text-muted);" id="current-perspective-label">Donor View</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr id="table-head-row">
+                <!-- Injected dynamically based on perspective -->
+              </tr>
+            </thead>
+            <tbody id="requests-table-body">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top: none;">
+      <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+      <div>
+        <a href="index.html" style="color: #6ee7b7; margin-right: 1.25rem;">Home</a>
+        <a href="history.html" style="color: #6ee7b7;">History</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      let currentFilter = 'all';
+      let currentRole = 'donor'; // initialized from authenticated user
+      let requestsList = [];
+
+      const heading = document.getElementById('table-view-heading');
+      const label = document.getElementById('current-perspective-label');
+
+      // Helper to escape HTML safely
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function updatePerspectiveUI(role) {
+        const isDonor = role === 'donor';
+        const roleIndicator = document.getElementById('user-role-indicator');
+        const roleTag = document.getElementById('requests-role-tag');
+        const roleSubtext = document.getElementById('requests-role-subtext');
+        const pageDesc = document.getElementById('requests-page-desc');
+        const navDash = document.getElementById('nav-dashboard-link');
+
+        if (navDash) {
+          navDash.href = isDonor ? 'donor-dashboard.html' : 'seeker-dashboard.html';
+          navDash.textContent = isDonor ? 'Donor Dashboard' : 'Seeker Dashboard';
+        }
+
+        if (roleIndicator) {
+          roleIndicator.textContent = isDonor ? 'Food Donor' : 'Food Seeker';
+          roleIndicator.className = `badge ${isDonor ? 'badge-available' : 'badge-completed'}`;
+        }
+
+        if (roleTag) {
+          roleTag.textContent = isDonor ? 'Donor Portal' : 'Seeker Portal';
+          if (!isDonor) {
+            roleTag.classList.add('seeker');
+          } else {
+            roleTag.classList.remove('seeker');
+          }
+        }
+
+        if (roleSubtext) {
+          roleSubtext.textContent = isDonor ? '• Incoming Claims' : '• My Food Claims';
+        }
+
+        if (pageDesc) {
+          pageDesc.textContent = isDonor
+            ? 'Audit incoming surplus food claims, manage approvals, and coordinate pickup logistics.'
+            : 'Track your submitted food requests, approval statuses, and coordinate collection logistics.';
+        }
+
+        if (heading) {
+          heading.textContent = isDonor
+            ? 'Incoming Requests for Your Surplus Food'
+            : 'Food Requests Submitted by Your Community';
+        }
+
+        if (label) {
+          label.textContent = isDonor
+            ? 'Donor View (Approve / Reject Claims)'
+            : 'Seeker View (Track Claim Status)';
+        }
+      }
+
+      // Check cached session immediately to avoid layout flicker
+      try {
+        const cached = JSON.parse(localStorage.getItem('foodcare_user_session') || '{}');
+        if (cached && cached.role) {
+          currentRole = (cached.role || '').toLowerCase() === 'seeker' ? 'seeker' : 'donor';
+          updatePerspectiveUI(currentRole);
+        }
+      } catch (err) { }
+
+      // Authenticate session from backend
+      let authUser = null;
+      try {
+        authUser = await window.API.auth.getMe();
+      } catch (err) {
+        console.warn('Auth check error:', err);
+      }
+
+      if (!authUser) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Automatically select perspective according to backend authenticated user role
+      currentRole = (authUser.role || '').toLowerCase() === 'seeker' ? 'seeker' : 'donor';
+      updatePerspectiveUI(currentRole);
+
+      // Filter tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.status;
+          renderTable();
+        });
+      });
+
+      async function loadData() {
+        try {
+          requestsList = await window.API.requests.getAll();
+          updateTabBadges();
+          renderTable();
+        } catch (err) {
+          console.error('Failed to load requests:', err);
+          window.showToast('Unable to load requests from server.', 'error');
+        }
+      }
+
+      function updateTabBadges() {
+        document.getElementById('badge-all').textContent = requestsList.length;
+        document.getElementById('badge-pending').textContent = requestsList.filter(r => r.status === 'Pending').length;
+        document.getElementById('badge-accepted').textContent = requestsList.filter(r => r.status === 'Accepted').length;
+        document.getElementById('badge-completed').textContent = requestsList.filter(r => r.status === 'Completed').length;
+        document.getElementById('badge-rejected').textContent = requestsList.filter(r => r.status === 'Rejected').length;
+      }
+
+      function renderTable() {
+        const thead = document.getElementById('table-head-row');
+        const tbody = document.getElementById('requests-table-body');
+        tbody.innerHTML = '';
+
+        if (currentRole === 'donor') {
+          thead.innerHTML = `
+            <th>Food Item</th>
+            <th>Requested By (NGO/Seeker)</th>
+            <th>Quantity</th>
+            <th>Request Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          `;
+        } else {
+          thead.innerHTML = `
+            <th>Food Item</th>
+            <th>Donor / Provider</th>
+            <th>Quantity Requested</th>
+            <th>Request Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          `;
+        }
+
+        const filtered = requestsList.filter(r => {
+          if (currentFilter === 'all') return true;
+          return r.status === currentFilter;
+        });
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                No requests found in the "${escapeHtml(currentFilter)}" category.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        filtered.forEach(req => {
+          const tr = document.createElement('tr');
+          const statusClass = (req.status || 'Pending').toLowerCase();
+
+          if (currentRole === 'donor') {
+            let actionsHtml = '';
+            if (req.status === 'Pending') {
+              actionsHtml = `
+                <div class="action-btn-group">
+                  <button class="btn btn-sm btn-success" onclick="updateRequestStatus('${req.id}', 'Accepted')">Accept</button>
+                  <button class="btn btn-sm btn-danger" onclick="updateRequestStatus('${req.id}', 'Rejected')">Reject</button>
+                </div>
+              `;
+            } else if (req.status === 'Accepted') {
+              actionsHtml = `
+                <button class="btn btn-sm btn-primary" onclick="updateRequestStatus('${req.id}', 'Completed')">Mark Handed Over</button>
+              `;
+            } else {
+              actionsHtml = `<span style="font-size: 0.85rem; color: var(--text-muted);">—</span>`;
+            }
+
+            const seekerContactText = req.seekerContact || req.seekerPhone || '';
+
+            tr.innerHTML = `
+              <td><strong>${escapeHtml(req.foodTitle)}</strong></td>
+              <td>${escapeHtml(req.seekerName)}<br><span style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(seekerContactText)}</span></td>
+              <td>${escapeHtml(req.quantityRequested)}</td>
+              <td>${escapeHtml(req.requestDate || '')}</td>
+              <td><span class="badge badge-${statusClass}">${escapeHtml(req.status)}</span></td>
+              <td>${actionsHtml}</td>
+            `;
+          } else {
+            // Seeker View: Display live donor details from database
+            let actionText = '';
+            if (req.status === 'Accepted') {
+              actionText = `<span style="color: var(--primary-green); font-weight: 600; font-size: 0.88rem;">Ready for Pickup</span>`;
+            } else if (req.status === 'Pending') {
+              actionText = `<span style="color: var(--status-pending); font-size: 0.88rem;">Awaiting Donor</span>`;
+            } else if (req.status === 'Completed') {
+              actionText = `<span style="color: var(--text-muted); font-size: 0.88rem;">Collected ✓</span>`;
+            } else {
+              actionText = `<span style="color: var(--status-rejected); font-size: 0.88rem;">Unavailable</span>`;
+            }
+
+            const donorTitle = req.donorOrganization || req.donorName || 'Verified Donor';
+            const donorLocation = req.foodLocation || 'Pickup location provided upon acceptance';
+
+            tr.innerHTML = `
+              <td><strong>${escapeHtml(req.foodTitle)}</strong></td>
+              <td>${escapeHtml(donorTitle)}<br><span style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(donorLocation)}</span></td>
+              <td>${escapeHtml(req.quantityRequested)}</td>
+              <td>${escapeHtml(req.requestDate || '')}</td>
+              <td><span class="badge badge-${statusClass}">${escapeHtml(req.status)}</span></td>
+              <td>${actionText}</td>
+            `;
+          }
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.updateRequestStatus = async function (id, newStatus) {
+        try {
+          await window.API.requests.updateStatus(id, newStatus);
+          const actionMsg = newStatus === 'Completed' ? 'Handover marked as completed!' : `Request status updated to ${newStatus}!`;
+          window.showToast(actionMsg, 'success');
+          await loadData();
+        } catch (err) {
+          console.error('Failed to update request status:', err);
+          window.showToast(err.message || 'Failed to update request status.', 'error');
+        }
+      };
+
+      loadData();
+    });
+  </script>
+</body>
+
+</html>

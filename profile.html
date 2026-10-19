@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - FoodCare</title>
+  <meta name="description" content="View and manage your FoodCare user profile, contact details, and organization information.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li id="donor-dashboard-item"><a href="donor-dashboard.html">Donor Dashboard</a></li>
+        <li id="seeker-dashboard-item"><a href="seeker-dashboard.html">Seeker Dashboard</a></li>
+        <li><a href="requests.html">Requests</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="profile.html" class="active">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Injected by main.js -->
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" style="padding-top: 3rem; padding-bottom: 4rem;">
+    <div class="container">
+      
+      <div class="profile-card">
+        
+        <!-- Profile Header & Avatar -->
+        <div class="profile-avatar-row">
+          <div class="profile-avatar-circle" id="profile-avatar-initials">GL</div>
+          <div class="profile-avatar-meta">
+            <h2 id="profile-display-name">Green Leaf Bistro</h2>
+            <p>
+              <span class="role-tag" id="profile-role-tag">Food Donor</span>
+              <span id="profile-display-org" style="margin-left: 0.5rem; font-weight: 500;">Green Leaf Hospitality Group</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Read-Only View Mode -->
+        <div id="profile-view-section">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+            <div>
+              <span class="form-label" style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Full Name / Contact Person</span>
+              <div id="view-name" style="font-size: 1.05rem; font-weight: 600;">Vikram Malhotra</div>
+            </div>
+
+            <div>
+              <span class="form-label" style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Account Role</span>
+              <div id="view-role" style="font-size: 1.05rem; font-weight: 600; text-transform: capitalize;">Donor</div>
+            </div>
+
+            <div>
+              <span class="form-label" style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Email Address</span>
+              <div id="view-email" style="font-size: 1.05rem; font-weight: 600;">contact@greenleaf.org</div>
+            </div>
+
+            <div>
+              <span class="form-label" style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Phone Number</span>
+              <div id="view-phone" style="font-size: 1.05rem; font-weight: 600;">+91 98230 11223</div>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+              <span class="form-label" style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Registered Address</span>
+              <div id="view-address" style="font-size: 1.05rem; font-weight: 600;">124 Kothrud Main Road, Pune, Maharashtra 411038</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+            <button id="toggle-edit-btn" class="btn btn-primary">
+              ✏️ Edit Profile Details
+            </button>
+            <a href="donor-dashboard.html" id="back-to-dashboard-btn" class="btn btn-secondary">
+              Back to Dashboard
+            </a>
+          </div>
+        </div>
+
+        <!-- Edit Form Mode (Initially Hidden) -->
+        <form id="profile-edit-form" style="display: none;" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-name" class="form-label">Full Name <span class="required">*</span></label>
+              <input type="text" id="edit-name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-org" class="form-label">Organization / Business</label>
+              <input type="text" id="edit-org" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-email" class="form-label">Email Address <span class="required">*</span></label>
+              <input type="email" id="edit-email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-phone" class="form-label">Phone Number <span class="required">*</span></label>
+              <input type="tel" id="edit-phone" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-address" class="form-label">Pickup Address / Hub Location</label>
+            <textarea id="edit-address" class="form-control" rows="3"></textarea>
+          </div>
+
+          <div style="display: flex; gap: 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top: none;">
+      <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+      <div>
+        <a href="index.html" style="color: #6ee7b7; margin-right: 1.25rem;">Home</a>
+        <a href="history.html" style="color: #6ee7b7;">History</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Helper function to show only the relevant dashboard based on user role
+      function updateDashboardByRole(role) {
+        const donorItem = document.getElementById('donor-dashboard-item');
+        const seekerItem = document.getElementById('seeker-dashboard-item');
+        const backBtn = document.getElementById('back-to-dashboard-btn');
+        const userRole = (role || '').toLowerCase();
+
+        if (userRole === 'donor') {
+          if (seekerItem) seekerItem.remove();
+          if (donorItem) donorItem.style.display = '';
+          if (backBtn) backBtn.href = 'donor-dashboard.html';
+        } else if (userRole === 'seeker') {
+          if (donorItem) donorItem.remove();
+          if (seekerItem) seekerItem.style.display = '';
+          if (backBtn) backBtn.href = 'seeker-dashboard.html';
+        }
+      }
+
+      // Check cached session immediately to avoid layout flicker
+      try {
+        const cached = JSON.parse(localStorage.getItem('foodcare_user_session') || '{}');
+        if (cached && cached.role) {
+          updateDashboardByRole(cached.role);
+        }
+      } catch (err) {}
+
+      let user = null;
+      try {
+        user = await window.API.users.getProfile();
+      } catch (err) {
+        console.warn('Failed to load user profile:', err);
+      }
+
+      if (user && user.role) {
+        updateDashboardByRole(user.role);
+      }
+      
+      const viewSection = document.getElementById('profile-view-section');
+      const editForm = document.getElementById('profile-edit-form');
+      const toggleEditBtn = document.getElementById('toggle-edit-btn');
+      const cancelEditBtn = document.getElementById('cancel-edit-btn');
+
+      function populateView(data) {
+        if (!data) return;
+        document.getElementById('profile-display-name').textContent = data.organization || data.name || 'User Profile';
+        document.getElementById('profile-display-org').textContent = data.organization || '';
+        document.getElementById('view-name').textContent = data.name || 'Vikram Malhotra';
+        document.getElementById('view-role').textContent = data.role || 'donor';
+        document.getElementById('view-email').textContent = data.email || 'donor@greenleaf.org';
+        document.getElementById('view-phone').textContent = data.phone || '+91 98230 11223';
+        document.getElementById('view-address').textContent = data.address || 'Kothrud, Pune, Maharashtra';
+
+        const roleTag = document.getElementById('profile-role-tag');
+        if (roleTag) {
+          roleTag.textContent = data.role === 'donor' ? 'Food Donor' : 'Food Seeker';
+          roleTag.className = `role-tag ${data.role === 'seeker' ? 'seeker' : ''}`;
+        }
+
+        const initials = (data.organization || data.name || 'FC').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+        const initialsEl = document.getElementById('profile-avatar-initials');
+        if (initialsEl) initialsEl.textContent = initials;
+      }
+
+      function populateForm(data) {
+        if (!data) return;
+        document.getElementById('edit-name').value = data.name || '';
+        document.getElementById('edit-org').value = data.organization || '';
+        document.getElementById('edit-email').value = data.email || '';
+        document.getElementById('edit-phone').value = data.phone || '';
+        document.getElementById('edit-address').value = data.address || '';
+      }
+
+      if (user) {
+        populateView(user);
+      }
+
+      if (toggleEditBtn) {
+        toggleEditBtn.addEventListener('click', () => {
+          populateForm(user);
+          viewSection.style.display = 'none';
+          editForm.style.display = 'block';
+        });
+      }
+
+      if (cancelEditBtn) {
+        cancelEditBtn.addEventListener('click', () => {
+          editForm.style.display = 'none';
+          viewSection.style.display = 'block';
+        });
+      }
+
+      if (editForm) {
+        editForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const updated = {
+            name: document.getElementById('edit-name').value.trim(),
+            organization: document.getElementById('edit-org').value.trim(),
+            email: document.getElementById('edit-email').value.trim(),
+            phone: document.getElementById('edit-phone').value.trim(),
+            address: document.getElementById('edit-address').value.trim()
+          };
+
+          try {
+            const saved = await window.API.users.updateProfile(updated);
+            user = { ...user, ...updated, ...(saved || {}) };
+            populateView(user);
+            if (user.role) updateDashboardByRole(user.role);
+            editForm.style.display = 'none';
+            viewSection.style.display = 'block';
+            window.showToast('Profile updated successfully!', 'success');
+          } catch (err) {
+            window.showToast(err.message || 'Failed to update profile', 'error');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

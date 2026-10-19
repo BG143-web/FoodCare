@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - FoodCare</title>
+  <meta name="description" content="Create a FoodCare account to donate surplus food or request food for community relief.">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="seeker-dashboard.html">Browse Food</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <span style="font-size: 0.9rem; color: var(--text-muted);">Already registered?</span>
+        <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content auth-wrapper">
+    <div class="auth-card auth-card-wide">
+      <div class="auth-header">
+        <div class="brand-icon">🌱</div>
+        <h1>Create Your Account</h1>
+        <p>Join our mission to eliminate hunger and rescue surplus food.</p>
+      </div>
+
+      <form id="register-form" novalidate>
+        
+        <!-- Role Selector -->
+        <div class="role-selector-group">
+          <label class="role-selector-label">I want to join as a: <span class="required" style="color: var(--status-rejected);">*</span></label>
+          <div class="role-options">
+            <div class="role-option">
+              <input type="radio" id="reg-role-donor" name="role" value="donor" checked>
+              <label for="reg-role-donor" class="role-card-label">
+                <span class="role-card-icon">🏢</span>
+                <span class="role-card-title">Food Donor</span>
+                <span class="role-card-desc">Have extra food to share</span>
+              </label>
+            </div>
+
+            <div class="role-option">
+              <input type="radio" id="reg-role-seeker" name="role" value="seeker">
+              <label for="reg-role-seeker" class="role-card-label">
+                <span class="role-card-icon">🤝</span>
+                <span class="role-card-title">Food Seeker</span>
+                <span class="role-card-desc">Need food for community</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-error"></div>
+        </div>
+
+        <!-- Name & Organization -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-name" class="form-label">
+              Full Name / Representative <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="reg-name" 
+              name="fullName" 
+              class="form-control" 
+              placeholder="e.g. Vikram Malhotra" 
+              required
+            >
+            <div class="form-error"></div>
+          </div>
+
+          <div class="form-group donor-only conditional-field">
+            <label for="reg-organization" class="form-label">
+              Business / Org Name <span class="form-hint" style="display: inline;">(Optional)</span>
+            </label>
+            <input 
+              type="text" 
+              id="reg-organization" 
+              name="organization" 
+              class="form-control" 
+              placeholder="e.g. Royal Spice Caterers"
+            >
+          </div>
+        </div>
+
+        <!-- Email & Phone -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-email" class="form-label">
+              Email Address <span class="required">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="reg-email" 
+              name="email" 
+              class="form-control" 
+              placeholder="name@organization.com" 
+              required
+              autocomplete="email"
+            >
+            <div class="form-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-phone" class="form-label">
+              Phone Number <span class="required">*</span>
+            </label>
+            <input 
+              type="tel" 
+              id="reg-phone" 
+              name="phone" 
+              class="form-control" 
+              placeholder="e.g. +91 98765 43210" 
+              required
+              autocomplete="tel"
+            >
+            <div class="form-error"></div>
+          </div>
+        </div>
+
+        <!-- Passwords -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-password" class="form-label">
+              Password <span class="required">*</span>
+            </label>
+            <div class="password-input-wrapper">
+              <input 
+                type="password" 
+                id="reg-password" 
+                name="password" 
+                class="form-control" 
+                placeholder="At least 6 characters" 
+                required
+                autocomplete="new-password"
+              >
+              <button type="button" class="toggle-password-btn" aria-label="Show password">Show</button>
+            </div>
+            <div class="form-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-confirm-password" class="form-label">
+              Confirm Password <span class="required">*</span>
+            </label>
+            <div class="password-input-wrapper">
+              <input 
+                type="password" 
+                id="reg-confirm-password" 
+                name="confirmPassword" 
+                class="form-control" 
+                placeholder="Re-enter password" 
+                required
+                autocomplete="new-password"
+              >
+              <button type="button" class="toggle-password-btn" aria-label="Show password">Show</button>
+            </div>
+            <div class="form-error"></div>
+          </div>
+        </div>
+
+        <!-- Terms Agreement -->
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <label class="checkbox-label">
+            <input type="checkbox" id="reg-terms" name="terms" required>
+            <span style="font-size: 0.88rem;">
+              I agree to the <a href="#" onclick="window.showToast('Terms: All donations must be wholesome, hygienic, and non-expired.', 'info'); return false;">Terms of Service</a> and <a href="#" onclick="window.showToast('FoodCare respects user privacy and strictly coordinates safe food logistics.', 'info'); return false;">Food Safety Guidelines</a>.
+            </span>
+          </label>
+          <div id="terms-error" class="form-error"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+          Create Free Account
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign in here</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top: none; padding-top: 0;">
+      <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+      <div>
+        <a href="index.html" style="color: #6ee7b7; margin-right: 1.25rem;">Home</a>
+        <a href="#" style="color: #6ee7b7;">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

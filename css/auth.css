@@ -1,0 +1,197 @@
+/* ==========================================================================
+   FoodCare - Authentication UI Styles (Login & Register)
+   Pure CSS (No Frameworks)
+   ========================================================================== */
+
+.auth-wrapper {
+  min-height: calc(100vh - var(--nav-height) - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  background-color: var(--bg-page);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 520px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
+}
+
+.auth-card-wide {
+  max-width: 620px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header .brand-icon {
+  margin: 0 auto 1rem auto;
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+}
+
+.auth-header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--heading-color);
+}
+
+.auth-header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* Role Selector Segmented Control */
+.role-selector-group {
+  margin-bottom: 1.5rem;
+}
+
+.role-selector-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.role-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.role-option {
+  position: relative;
+}
+
+.role-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.role-card-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0.75rem;
+  background-color: var(--bg-page);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.role-card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.role-card-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.role-card-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.role-option input[type="radio"]:checked + .role-card-label {
+  border-color: var(--primary-green);
+  background-color: var(--primary-green-light);
+}
+
+.role-option input[type="radio"]:checked + .role-card-label .role-card-title {
+  color: var(--primary-green-dark);
+}
+
+.role-option input[type="radio"]:focus-visible + .role-card-label {
+  outline: 2px solid var(--primary-green);
+}
+
+/* Additional Dynamic Donor Info */
+.conditional-field {
+  transition: all var(--transition-normal);
+}
+
+.conditional-field.hidden {
+  display: none;
+}
+
+/* Checkboxes and Helpers */
+.auth-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  font-size: 0.88rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-green);
+  cursor: pointer;
+}
+
+.auth-footer {
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.25rem;
+}
+
+.auth-footer a {
+  font-weight: 600;
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px;
+}
+
+.toggle-password-btn:hover {
+  color: var(--text-primary);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}

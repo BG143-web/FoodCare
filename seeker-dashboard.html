@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Seeker Dashboard - FoodCare</title>
+  <meta name="description" content="Browse available surplus food listings, submit requests, and track distributions for your community.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body id="seeker-dashboard-root">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="seeker-dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="#browse-section">Find Food</a></li>
+        <li><a href="requests.html">My Requests</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Injected by main.js with role switch and logout buttons -->
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header & Welcome -->
+  <header class="dash-header">
+    <div class="container dash-header-content">
+      <div class="dash-title-group">
+        <div class="dash-subtitle">
+          <span class="role-tag seeker">Food Seeker Portal</span>
+          <span>• Community & NGO Support</span>
+        </div>
+        <h1>Welcome, <span id="seeker-welcome-name">Hope Community Shelter</span></h1>
+        <p style="margin: 0; color: var(--text-muted);">Explore live surplus food supplies donated by verified local providers.</p>
+      </div>
+
+      <div>
+        <a href="#browse-section" class="btn btn-primary btn-lg">
+          Browse Live Listings
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Statistics Cards Grid -->
+      <section class="stats-grid" aria-label="Seeker Activity Metrics">
+        <div class="stat-card">
+          <div class="stat-icon">🍲</div>
+          <div class="stat-info">
+            <span class="stat-value" id="seeker-stat-available">0</span>
+            <span class="stat-label">Available Surplus Items</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon pending">📋</div>
+          <div class="stat-info">
+            <span class="stat-value" id="seeker-stat-requests">0</span>
+            <span class="stat-label">My Requests</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon accepted">✅</div>
+          <div class="stat-info">
+            <span class="stat-value" id="seeker-stat-accepted">0</span>
+            <span class="stat-label">Accepted / Ready</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon completed">🎉</div>
+          <div class="stat-info">
+            <span class="stat-value" id="seeker-stat-completed">0</span>
+            <span class="stat-label">Completed Collections</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions Bar -->
+      <section class="actions-card">
+        <div class="actions-text">
+          <h3>Community Food Operations</h3>
+          <p>Find meals for today’s distribution or monitor your pickup status in real-time.</p>
+        </div>
+        <div class="actions-btn-group">
+          <a href="#browse-section" class="btn btn-primary">
+            Find Food Nearby
+          </a>
+          <a href="requests.html" class="btn btn-outline">
+            Track Active Requests
+          </a>
+          <a href="history.html" class="btn btn-secondary">
+            View Request History
+          </a>
+        </div>
+      </section>
+
+      <!-- Browse Food Section -->
+      <section id="browse-section" style="margin-bottom: 4rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Available Surplus Food</h2>
+            <p style="margin: 0; color: var(--text-muted);">Verified food available for immediate pickup and distribution.</p>
+          </div>
+          <span id="filtered-count-badge" class="badge badge-available" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">
+            0 items available
+          </span>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="filter-bar">
+          <div class="search-input-box">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="text" 
+              id="seeker-search-input" 
+              class="form-control" 
+              placeholder="Search by food name, locality, or donor..."
+            >
+          </div>
+
+          <div class="filter-categories">
+            <button class="filter-btn active" data-category="all">All Foods</button>
+            <button class="filter-btn" data-category="Cooked Food">Cooked Meals</button>
+            <button class="filter-btn" data-category="Bakery">Bakery</button>
+            <button class="filter-btn" data-category="Fresh Produce">Produce</button>
+            <button class="filter-btn" data-category="Dairy">Dairy</button>
+            <button class="filter-btn" data-category="Packaged Food">Packaged</button>
+          </div>
+        </div>
+
+        <!-- Food Cards Grid -->
+        <div id="seeker-food-grid" class="food-grid">
+          <!-- Rendered dynamically by seeker.js -->
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top: none;">
+      <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+      <div>
+        <a href="index.html" style="color: #6ee7b7; margin-right: 1.25rem;">Home</a>
+        <a href="requests.html" style="color: #6ee7b7; margin-right: 1.25rem;">Requests</a>
+        <a href="profile.html" style="color: #6ee7b7;">Profile</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/food.js"></script>
+  <script src="/js/seeker.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

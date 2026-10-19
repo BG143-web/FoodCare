@@ -1,0 +1,530 @@
+================================================================================
+                    FOODCARE - FULL BACKEND ARCHITECTURE & PLAN
+================================================================================
+Application Name: FoodCare (Surplus Food Rescue & Waste Management Platform)
+Frontend Tech   : Pure HTML5, CSS3, Vanilla JavaScript (ES6) - 9 Pages
+Backend Tech    : Node.js (v20+ LTS), Express.js REST API
+Database        : MySQL 8.0+ (InnoDB Engine)
+Authentication  : JSON Web Tokens (JWT) + bcrypt Password Hashing (10 Rounds)
+================================================================================
+
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1. Executive Summary & Website Analysis
+2. Frontend-to-Backend Route Mapping
+3. Complete MySQL Database Schema (DDL)
+4. Comprehensive REST API Specification
+5. Authentication, Security & Role-Based Access Control (RBAC)
+6. Business Logic & State Machine Workflows
+7. Frontend Integration Code (js/api.js update)
+8. Recommended Backend Directory Structure
+9. Step-by-Step Setup, Local Run & Testing Guide
+10. Database Backup, Restore & Production Maintenance Plan
+--------------------------------------------------------------------------------
+
+
+================================================================================
+1. EXECUTIVE SUMMARY & WEBSITE ANALYSIS
+================================================================================
+FoodCare is a community-driven food rescue web application that connects donors
+(restaurants, hotels, banquet caterers, bakeries, households) with food seekers
+(NGOs, community kitchens, shelters, and individuals in need).
+
+Key Objectives of the Backend:
+- Eliminate manual bottlenecks in redistributing perishable food.
+- Guarantee relational data integrity across concurrent claims.
+- Protect sensitive contact and address information via strict RBAC.
+- Record auditable history of completed handovers to measure environmental and
+  social impact (Meals Saved, kg of Waste Diverted, CO2 emissions prevented).
+
+
+================================================================================
+2. FRONTEND-TO-BACKEND ROUTE MAPPING
+================================================================================
+The frontend is already built across 9 standalone pages with zero frameworks.
+The backend integrates directly without modifying the HTML/CSS markup:
+
+Page File               Functionality               Target Backend Endpoint
+---------------------   -------------------------   ----------------------------
+index.html              Public Impact Aggregates    GET /api/stats/summary
+login.html              User Sign-in                POST /api/auth/login
+register.html           User Onboarding             POST /api/auth/register
+donor-dashboard.html    Donor Metrics & Listings    GET /api/donor/dashboard
+                        Add Surplus Food Modal      POST /api/foods
+seeker-dashboard.html   Live Filterable Listings    GET /api/foods
+                        Seeker Metrics              GET /api/seeker/dashboard
+food-details.html       Item Metadata & Pickup Info GET /api/foods/:id
+                        Submit Food Claim           POST /api/requests
+requests.html           Filter Requests by Status   GET /api/requests
+                        Accept / Reject / Handover  PUT /api/requests/:id/status
+profile.html            View / Edit Profile Info    GET /api/users/profile
+                                                    PUT /api/users/profile
+history.html            Completed Donations & Claims GET /api/history
+
+
+================================================================================
+3. COMPLETE MYSQL DATABASE SCHEMA (DDL)
+================================================================================
+Run the following SQL statements in MySQL 8.0+:
+
+-- Create Database
+CREATE DATABASE IF NOT EXISTS foodcare_db 
+  CHARACTER SET utf8mb4 
+  COLLATE utf8mb4_unicode_ci;
+
+USE foodcare_db;
+
+-- 1. Users Table (Stores Donors and Food Seekers)
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(120) NOT NULL,
+  email VARCHAR(160) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  phone VARCHAR(30) NOT NULL,
+  role ENUM('donor', 'seeker') NOT NULL,
+  organization_name VARCHAR(180) NULL,
+  address TEXT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_users_email (email),
+  INDEX idx_users_role (role)
+) ENGINE=InnoDB;
+
+-- 2. Foods Table (Surplus Food Listings)
+CREATE TABLE IF NOT EXISTS foods (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  donor_id INT NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  category ENUM('Cooked Food', 'Bakery', 'Fresh Produce', 'Dairy', 'Packaged Food') NOT NULL,
+  quantity VARCHAR(80) NOT NULL,
+  location VARCHAR(200) NOT NULL,
+  available_until VARCHAR(100) NOT NULL,
+  status ENUM('Available', 'Reserved', 'Completed', 'Cancelled') NOT NULL DEFAULT 'Available',
+  description TEXT NULL,
+  pickup_notes TEXT NULL,
+  image_url VARCHAR(500) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (donor_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_foods_status (status),
+  INDEX idx_foods_category (category),
+  INDEX idx_foods_donor (donor_id)
+) ENGINE=InnoDB;
+
+-- 3. Food Requests Table (Claims by Seekers / NGOs)
+CREATE TABLE IF NOT EXISTS food_requests (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  food_id INT NOT NULL,
+  seeker_id INT NOT NULL,
+  quantity_requested VARCHAR(80) NOT NULL,
+  notes TEXT NULL,
+  status ENUM('Pending', 'Accepted', 'Rejected', 'Completed') NOT NULL DEFAULT 'Pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (food_id) REFERENCES foods(id) ON DELETE CASCADE,
+  FOREIGN KEY (seeker_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_requests_status (status),
+  INDEX idx_requests_food (food_id),
+  INDEX idx_requests_seeker (seeker_id)
+) ENGINE=InnoDB;
+
+-- 4. Distribution History Table (Audited Completed Handovers)
+CREATE TABLE IF NOT EXISTS distribution_history (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  request_id INT NOT NULL,
+  food_id INT NOT NULL,
+  donor_id INT NOT NULL,
+  seeker_id INT NOT NULL,
+  quantity_completed VARCHAR(80) NOT NULL,
+  meals_saved_count INT DEFAULT 0,
+  waste_kg_saved DECIMAL(8, 2) DEFAULT 0.00,
+  co2_kg_saved DECIMAL(8, 2) DEFAULT 0.00,
+  completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (request_id) REFERENCES food_requests(id) ON DELETE CASCADE,
+  FOREIGN KEY (food_id) REFERENCES foods(id) ON DELETE CASCADE,
+  FOREIGN KEY (donor_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (seeker_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_history_donor (donor_id),
+  INDEX idx_history_seeker (seeker_id)
+) ENGINE=InnoDB;
+
+
+================================================================================
+4. COMPREHENSIVE REST API SPECIFICATION
+================================================================================
+
+[AUTHENTICATION ENDPOINTS]
+- POST /api/auth/register
+  Access: Public
+  Request:
+    {
+      "fullName": "Vikram Malhotra",
+      "email": "donor@greenleaf.org",
+      "phone": "+91 98230 11223",
+      "password": "password123",
+      "role": "donor", // or "seeker"
+      "organization": "Green Leaf Bistro",
+      "address": "124 Kothrud Main Road, Pune"
+    }
+  Response (201 Created):
+    {
+      "success": true,
+      "user": { "id": 1, "name": "Vikram Malhotra", "email": "donor@greenleaf.org", "role": "donor" }
+    }
+
+- POST /api/auth/login
+  Access: Public
+  Request:
+    { "email": "donor@greenleaf.org", "password": "password123", "role": "donor" }
+  Response (200 OK):
+    Sets httpOnly JWT cookie. Returns user metadata.
+
+- POST /api/auth/logout
+  Access: Authenticated
+  Response (200 OK): Clears cookie.
+
+- GET /api/auth/me
+  Access: Authenticated
+  Response (200 OK): Returns current authenticated user record.
+
+
+[FOOD LISTING ENDPOINTS]
+- GET /api/foods
+  Access: Public
+  Query Params:
+    - category (optional, e.g., "Cooked Food", "Bakery")
+    - search (optional, text match across title, location, donor name)
+    - status (optional, defaults to "Available")
+  Response (200 OK): Array of food listings with donor details.
+
+- GET /api/foods/:id
+  Access: Public
+  Response (200 OK): Single item with full pickup notes and contact details.
+
+- POST /api/foods
+  Access: Donor Only
+  Request:
+    {
+      "title": "Fresh Vegetable Pulao",
+      "category": "Cooked Food",
+      "quantity": "25 Meals",
+      "location": "Kothrud, Pune",
+      "availableUntil": "Today, 8:30 PM",
+      "description": "Packed in food-grade foil containers.",
+      "pickupNotes": "Kitchen dispatch door."
+    }
+  Response (201 Created): Returns newly created food item.
+
+- PUT /api/foods/:id
+  Access: Donor Only (Owner)
+  Response (200 OK): Updates food listing details.
+
+- DELETE /api/foods/:id
+  Access: Donor Only (Owner)
+  Response (200 OK): Soft or hard deletes the listing.
+
+
+[FOOD REQUEST & HANDOVER ENDPOINTS]
+- GET /api/requests
+  Access: Authenticated
+  Behavior:
+    - Donors receive requests submitted for their food listings.
+    - Seekers receive requests they have submitted.
+  Query Params: status ("Pending", "Accepted", "Completed", "Rejected", "all")
+  Response (200 OK): Array of matching requests with food and partner details.
+
+- POST /api/requests
+  Access: Seeker Only
+  Request:
+    {
+      "foodId": 101,
+      "quantityRequested": "20 Meals",
+      "notes": "Elderly feeding distribution."
+    }
+  Response (201 Created): Returns request with status "Pending".
+
+- PUT /api/requests/:id/status
+  Access: Authenticated
+  Request:
+    { "status": "Accepted" } // "Accepted" | "Rejected" | "Completed"
+  Response (200 OK):
+    - "Accepted": Sets request to Accepted and locks food to "Reserved".
+    - "Completed": Marks handover done, creates record in distribution_history.
+    - "Rejected": Reverts food to "Available" if no other accepted claims exist.
+
+
+[PROFILE & STATS ENDPOINTS]
+- GET /api/users/profile
+  Access: Authenticated
+  Response (200 OK): Full profile object for currently signed-in user.
+
+- PUT /api/users/profile
+  Access: Authenticated
+  Request:
+    { "name": "...", "organization": "...", "phone": "...", "address": "..." }
+  Response (200 OK): Returns updated profile.
+
+- GET /api/stats/summary
+  Access: Public
+  Response (200 OK):
+    {
+      "mealsSaved": 28450,
+      "foodDonors": 480,
+      "foodSeekers": 920,
+      "wasteDivertedTons": 14.8
+    }
+
+- GET /api/history
+  Access: Authenticated
+  Response (200 OK): Array of completed donation/claim records for the user.
+
+
+================================================================================
+5. AUTHENTICATION, SECURITY & ROLE-BASED ACCESS CONTROL (RBAC)
+================================================================================
+1. Password Storage:
+   - Uses `bcryptjs` with 10 salt rounds.
+   - Plaintext passwords never logged or saved to the database.
+
+2. JWT Strategy:
+   - Payload: { id: user.id, email: user.email, role: user.role }
+   - Expiration: 7 days.
+   - Storage: HTTP-only, SameSite: Lax cookies, preventing cross-site token theft.
+
+3. Express Middleware Stack:
+   - authenticateToken: Verifies the JWT signature from cookie or Bearer header.
+   - requireRole('donor'): Enforces that only food donors can post/accept food.
+   - requireRole('seeker'): Enforces that only seekers/NGOs can submit claims.
+
+4. SQL Injection Protection:
+   - All queries executed through prepared statements via `mysql2/promise`:
+     await db.execute('SELECT * FROM foods WHERE id = ?', [foodId]);
+
+
+================================================================================
+6. BUSINESS LOGIC & STATE MACHINE WORKFLOWS
+================================================================================
+Food Listing Lifecycle:
+  [Draft/Created] ──► Available ──► Reserved (Claim Accepted) ──► Completed
+                          │
+                          └──► Cancelled / Expired
+
+Request Lifecycle:
+  Pending ──► Accepted ──► Completed (Handover verified)
+     │
+     └──► Rejected
+
+Impact Calculation Algorithm (on Handover Completion):
+- Cooked Food   : 1 Portion = 1 Meal, 0.45 kg waste prevented, 1.12 kg CO2 saved
+- Bakery        : 1 Loaf    = 4 Meals, 0.50 kg waste prevented, 0.90 kg CO2 saved
+- Fresh Produce : 1 kg      = 2 Meals, 1.00 kg waste prevented, 1.90 kg CO2 saved
+- Dairy         : 1 Liter   = 3 Meals, 1.00 kg waste prevented, 2.40 kg CO2 saved
+
+
+================================================================================
+7. FRONTEND INTEGRATION CODE (js/api.js)
+================================================================================
+Replace the localStorage implementation in js/api.js with the following standard
+fetch calls. Notice how the function signatures match exactly what the UI expects:
+
+```javascript
+const API_BASE = '/api';
+
+window.API = {
+  auth: {
+    async login(credentials) {
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(credentials)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Login failed');
+      return data;
+    },
+
+    async register(userData) {
+      const res = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(userData)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Registration failed');
+      return data;
+    },
+
+    async getCurrentUser() {
+      const res = await fetch(`${API_BASE}/auth/me`, { credentials: 'include' });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.user;
+    },
+
+    async logout() {
+      await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' });
+    }
+  },
+
+  foods: {
+    async getAll(params = {}) {
+      const qs = new URLSearchParams(params).toString();
+      const res = await fetch(`${API_BASE}/foods?${qs}`, { credentials: 'include' });
+      return res.json();
+    },
+
+    async getById(id) {
+      const res = await fetch(`${API_BASE}/foods/${id}`, { credentials: 'include' });
+      return res.json();
+    },
+
+    async create(foodData) {
+      const res = await fetch(`${API_BASE}/foods`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(foodData)
+      });
+      return res.json();
+    }
+  },
+
+  requests: {
+    async getAll() {
+      const res = await fetch(`${API_BASE}/requests`, { credentials: 'include' });
+      return res.json();
+    },
+
+    async create(requestData) {
+      const res = await fetch(`${API_BASE}/requests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(requestData)
+      });
+      return res.json();
+    },
+
+    async updateStatus(id, status) {
+      const res = await fetch(`${API_BASE}/requests/${id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ status })
+      });
+      return res.json();
+    }
+  },
+
+  users: {
+    async getProfile() {
+      const res = await fetch(`${API_BASE}/users/profile`, { credentials: 'include' });
+      return res.json();
+    },
+
+    async updateProfile(profileData) {
+      const res = await fetch(`${API_BASE}/users/profile`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(profileData)
+      });
+      return res.json();
+    }
+  }
+};
+```
+
+
+================================================================================
+8. RECOMMENDED BACKEND DIRECTORY STRUCTURE
+================================================================================
+Organize the backend project as follows:
+
+foodcare/
+├── .env                         # Secrets (PORT, DB_HOST, DB_USER, DB_PASS, JWT_SECRET)
+├── .env.example                 # Environment template
+├── server.js                    # Express application entry point
+├── schema.sql                   # MySQL schema definition
+│
+├── config/
+│   └── db.js                    # mysql2 connection pool manager
+│
+├── middleware/
+│   ├── authMiddleware.js        # JWT token verification
+│   └── roleMiddleware.js        # Donor / Seeker authorization guards
+│
+├── controllers/
+│   ├── authController.js        # Login, Register, Logout, Me
+│   ├── foodController.js        # CRUD for food inventory
+│   ├── requestController.js     # Claim creation, accept/reject, handover
+│   ├── userController.js        # Profile retrieval and edits
+│   └── statsController.js       # Global and dashboard metrics
+│
+├── routes/
+│   ├── authRoutes.js
+│   ├── foodRoutes.js
+│   ├── requestRoutes.js
+│   ├── userRoutes.js
+│   └── statsRoutes.js
+│
+└── public/                      # Static frontend files (index.html, css/, js/)
+
+
+================================================================================
+9. STEP-BY-STEP SETUP, LOCAL RUN & TESTING GUIDE
+================================================================================
+1. Initialize Project & Install Dependencies:
+   npm init -y
+   npm install express mysql2 jsonwebtoken bcryptjs cookie-parser cors dotenv helmet
+
+2. Configure .env:
+   PORT=3000
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=your_password_here
+   DB_NAME=foodcare_db
+   JWT_SECRET=super_secret_foodcare_key_2026
+
+3. Initialize Database:
+   mysql -u root -p < schema.sql
+
+4. Start Backend Server:
+   node server.js
+   (or: npx nodemon server.js for live-reloading during development)
+
+5. Test Core Verification Flow:
+   a) Register Donor on register.html.
+   b) Log in and post a surplus food listing from donor-dashboard.html.
+   c) In a separate window or incognito session, register a Food Seeker.
+   d) Browse the listing on seeker-dashboard.html and click "Request Food".
+   e) Switch back to the donor's requests.html to Accept the claim.
+   f) Click "Mark Handed Over" to finalize the distribution and check history.html.
+
+
+================================================================================
+10. DATABASE BACKUP, RESTORE & PRODUCTION MAINTENANCE PLAN
+================================================================================
+1. Automated Daily Backups:
+   Set up a nightly cron job on the production server:
+   0 2 * * * mysqldump -u root -p"$DB_PASSWORD" foodcare_db | gzip > /backups/foodcare_$(date +\%F).sql.gz
+
+2. Disaster Recovery / Point-in-Time Restore:
+   gunzip < /backups/foodcare_YYYY-MM-DD.sql.gz | mysql -u root -p"$DB_PASSWORD" foodcare_db
+
+3. Health & Pool Monitoring:
+   Implement a `/health` endpoint returning database ping status:
+   app.get('/health', async (req, res) => {
+     try {
+       await db.query('SELECT 1');
+       res.json({ status: 'ok', database: 'connected' });
+     } catch (err) {
+       res.status(500).json({ status: 'error', message: err.message });
+     }
+   });
+================================================================================
+                          END OF BACKEND PLAN
+================================================================================

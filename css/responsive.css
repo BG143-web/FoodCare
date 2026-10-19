@@ -1,0 +1,782 @@
+/* ==========================================================================
+   FoodCare - Comprehensive Responsive Design System & Layout Engine
+   Pure CSS (No Frameworks)
+   Covers: 320px, 360px, 375px, 390px, 414px, 430px, Tablets & Desktops
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. Global Base Safeguards
+   -------------------------------------------------------------------------- */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, a, label, li, td, th {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+input, select, textarea {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   1. Laptop & Medium Desktops (< 1200px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1199px) {
+  .container {
+    max-width: 960px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Tablets & Small Desktops (< 992px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .container {
+    max-width: 720px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  h1 { font-size: 2.15rem; }
+  h2 { font-size: 1.75rem; }
+
+  /* Mobile Navigation Drawer */
+  .mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    max-height: calc(100vh - var(--nav-height));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-light);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    gap: 0.75rem;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    z-index: 999;
+  }
+
+  .nav-links.nav-active {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    width: 100%;
+    display: block;
+    padding: 0.5rem 0;
+    font-size: 1.05rem;
+  }
+
+  /* Hero & Home Section Adjustments */
+  .hero-section {
+    padding: 3.5rem 0 3rem 0;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+    text-align: center;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+
+  .food-details-grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .food-details-img {
+    height: 280px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .history-impact-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .history-metric-box {
+    text-align: left;
+  }
+
+  .actions-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .actions-btn-group {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Tablets & Large Phones (< 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .container {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  h1 { font-size: 1.85rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+
+  .section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-header p {
+    font-size: 1rem;
+  }
+
+  /* Input fields: 16px font-size to prevent iOS Safari auto-zoom */
+  .form-control {
+    font-size: 16px;
+  }
+
+  /* Multi-column grid collapses */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .how-it-works-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .roles-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .food-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .food-card {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .food-info-list {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  /* Auth UI */
+  .auth-card {
+    padding: 1.75rem 1.5rem;
+  }
+
+  .role-options {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Search & Category Filter Bar */
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.85rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .search-input-box {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .filter-categories {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 0.35rem;
+    gap: 0.4rem;
+    scrollbar-width: none;
+  }
+
+  .filter-categories::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Dashboard Header */
+  .dash-header {
+    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .dash-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .dash-title-group h1 {
+    font-size: 1.55rem;
+  }
+
+  /* Tables & Responsive Scrolling Container */
+  .table-card {
+    margin-bottom: 2rem;
+  }
+
+  .table-header-box {
+    padding: 1rem 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table {
+    min-width: 600px;
+    font-size: 0.88rem;
+  }
+
+  .data-table th, .data-table td {
+    padding: 0.75rem 1rem;
+  }
+
+  .action-btn-group {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+  }
+
+  .action-btn-group .btn {
+    white-space: nowrap;
+  }
+
+  /* Tab Navigation Bar */
+  .tabs-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 1.25rem;
+  }
+
+  .tabs-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.65rem 0.95rem;
+    font-size: 0.88rem;
+  }
+
+  /* History Impact Summary */
+  .history-impact-banner {
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
+  }
+
+  .history-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .history-metric-box {
+    text-align: left;
+  }
+
+  .history-metric-num {
+    font-size: 1.65rem;
+  }
+
+  /* Profile Layout */
+  .profile-card {
+    padding: 1.75rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile-avatar-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  #profile-view-section > div:first-child {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Food Details Layout */
+  .food-details-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .food-details-img {
+    height: 240px;
+  }
+
+  /* Footer */
+  .footer {
+    padding-top: 2.75rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.85rem;
+    text-align: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Mobile Phones (< 576px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 576px) {
+  /* Navbar Height & Sizing */
+  .navbar {
+    height: 64px;
+    --nav-height: 64px;
+  }
+
+  .nav-container {
+    gap: 0.4rem;
+  }
+
+  .brand-logo {
+    gap: 0.45rem;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .brand-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .brand-name {
+    font-size: 1.15rem;
+    white-space: nowrap;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  /* Hide auxiliary non-action label text in navbar */
+  .nav-actions span:not(.badge) {
+    display: none;
+  }
+
+  .nav-actions .btn-sm {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .mobile-toggle {
+    padding: 0.35rem;
+    flex-shrink: 0;
+  }
+
+  /* Dashboard Header Actions */
+  .dash-header-content > div:last-child {
+    width: 100%;
+  }
+
+  .dash-header-content > div:last-child .btn {
+    width: 100%;
+  }
+
+  #role-perspective-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Management Quick Actions */
+  .actions-btn-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .actions-btn-group .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* History Role Switch Tabs */
+  #history-role-tabs {
+    width: 100%;
+    justify-content: stretch;
+    gap: 0.5rem;
+  }
+
+  #history-role-tabs .btn {
+    flex: 1;
+    text-align: center;
+    font-size: 0.82rem;
+    padding: 0.45rem 0.5rem;
+  }
+
+  /* Profile Action Buttons */
+  #profile-view-section > div:last-child,
+  #profile-edit-form > div:last-child {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  #profile-view-section .btn,
+  #profile-edit-form .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Modal Dialog Full Responsiveness */
+  .modal-backdrop {
+    padding: 0.75rem;
+  }
+
+  .modal-box {
+    max-height: 92vh;
+    width: 100%;
+    border-radius: var(--radius-md);
+  }
+
+  .modal-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .modal-body {
+    padding: 1rem 1.25rem;
+  }
+
+  .modal-footer {
+    padding: 0.85rem 1.25rem;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Footer Links */
+  .footer-bottom > div:last-child {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1rem !important;
+  }
+
+  .footer-bottom > div:last-child a {
+    margin-right: 0 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Compact Mobile Phones (< 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 479px) {
+  h1 { font-size: 1.55rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  h3 { font-size: 1.15rem !important; }
+
+  .hero-stats-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+
+  /* Targeted Full-width Buttons on small screens */
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .food-card-footer {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  .food-card-footer .btn {
+    width: 100%;
+  }
+
+  #recent-donations > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  #recent-donations > div:first-child .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  #about div[style*="inline-flex"] {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  #about .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Auth UI */
+  .auth-wrapper {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .auth-card {
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .auth-header h1 {
+    font-size: 1.45rem;
+  }
+
+  .auth-actions-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .auth-card .btn-primary {
+    width: 100%;
+  }
+
+  /* Food Details Action Buttons */
+  .food-details-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .food-details-img {
+    height: 210px;
+  }
+
+  .food-details-card div:last-child {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  .food-details-card div:last-child .btn {
+    width: 100% !important;
+    flex: none !important;
+    text-align: center;
+  }
+
+  /* Stat Card Spacing */
+  .stat-card {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.55rem;
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+  }
+
+  /* History Metrics single-column */
+  .history-metrics {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  /* Toast notification system for mobile */
+  #toast-container {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 0.75rem;
+    align-items: stretch;
+  }
+
+  .toast {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    font-size: 0.88rem;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Ultra-Compact Mobile Phones (320px - 380px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 380px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Hide role badge in navbar on tiny viewports (already visible in page header) */
+  .nav-actions .badge {
+    display: none;
+  }
+
+  .nav-actions {
+    gap: 0.25rem;
+  }
+
+  .nav-actions .btn-sm {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.78rem;
+  }
+
+  .brand-name {
+    font-size: 1.05rem;
+  }
+
+  .brand-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .auth-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .profile-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .food-details-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .stat-card {
+    padding: 0.85rem;
+    gap: 0.75rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+}

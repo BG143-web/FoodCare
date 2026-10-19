@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Item Details - FoodCare</title>
+  <meta name="description" content="View full details and pickup instructions for surplus food on FoodCare.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="seeker-dashboard.html">Browse Food</a></li>
+        <li><a href="requests.html">My Requests</a></li>
+        <li><a href="donor-dashboard.html">Donor Dashboard</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Rendered by main.js with role switch and logout buttons -->
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    <div class="container">
+      
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem; font-size: 0.9rem;">
+        <a href="seeker-dashboard.html" style="color: var(--text-muted);">← Back to Available Foods</a>
+      </nav>
+
+      <!-- Details Container populated by food.js -->
+      <div id="food-details-container">
+        <!-- Loading Placeholder -->
+        <div class="empty-state">
+          <div class="empty-state-icon">⏳</div>
+          <h3>Loading food details...</h3>
+          <p>Retrieving surplus food specifications and pickup instructions.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top: none;">
+      <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+      <div>
+        <a href="seeker-dashboard.html" style="color: #6ee7b7; margin-right: 1.25rem;">Browse Food</a>
+        <a href="index.html" style="color: #6ee7b7;">Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/food.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initFoodDetailsPage();
+    });
+  </script>
+</body>
+</html>

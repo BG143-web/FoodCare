@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impact & Donation History - FoodCare</title>
+  <meta name="description" content="View past food donations and completed food relief distributions on FoodCare.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="donor-dashboard.html" id="nav-dashboard-link">Dashboard</a></li>
+        <li><a href="requests.html">Requests</a></li>
+        <li><a href="history.html" class="active">History</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Injected by main.js -->
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header -->
+  <header class="dash-header">
+    <div class="container dash-header-content">
+      <div class="dash-title-group">
+        <div class="dash-subtitle">
+          <span class="role-tag" id="user-role-badge">Transparency</span>
+          <span id="user-role-subtext">• Track Record</span>
+        </div>
+        <h1 id="history-page-title">Food Rescue & Distribution History</h1>
+        <p id="history-page-desc" style="margin: 0; color: var(--text-muted);">Historical archive of completed donations, recipient handovers,
+          and community impact.</p>
+      </div>
+
+      <div id="history-role-tabs" style="display: flex; gap: 0.5rem; align-items: center;">
+        <button id="show-donations-tab" class="btn btn-primary btn-sm">Donation History</button>
+        <button id="show-requests-tab" class="btn btn-primary btn-sm">Request History</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Impact Banner -->
+      <section class="history-impact-banner" aria-label="Overall Impact Summary">
+        <div class="history-impact-text">
+          <h2>Cumulative Community Impact</h2>
+          <p>Every kilogram of surplus food saved provides direct nourishment and prevents landfill methane emissions.</p>
+        </div>
+
+        <div class="history-metrics">
+          <div class="history-metric-box">
+            <div class="history-metric-num" id="history-metric-meals">0</div>
+            <div class="history-metric-lbl" id="history-metric-meals-lbl">Meals Handed Over</div>
+          </div>
+          <div class="history-metric-box">
+            <div class="history-metric-num" id="history-metric-waste">0 kg</div>
+            <div class="history-metric-lbl">Waste Prevented</div>
+          </div>
+          <div class="history-metric-box">
+            <div class="history-metric-num" id="history-metric-co2">0 kg</div>
+            <div class="history-metric-lbl">CO2 Emissions Saved</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 1: Donation History (For Donors) -->
+      <section id="section-donation-history" class="table-card">
+        <div class="table-header-box">
+          <h3>Completed Food Donations</h3>
+          <span class="badge badge-completed" id="donation-badge-count">0 Completed</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Food Item</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Recipient Organization</th>
+                <th>Handover Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="donations-history-tbody">
+              <!-- Injected by js/history.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 2: Request History (For Seekers) -->
+      <section id="section-request-history" class="table-card" style="display: none;">
+        <div class="table-header-box">
+          <h3>Completed Food Requests</h3>
+          <span class="badge badge-completed" id="request-badge-count">0 Completed</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Food Item</th>
+                <th>Donor Partner</th>
+                <th>Quantity Received</th>
+                <th>Pickup Date</th>
+                <th>Distribution Target</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="requests-history-tbody">
+              <!-- Injected by js/history.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top: none;">
+      <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+      <div>
+        <a href="index.html" style="color: #6ee7b7; margin-right: 1.25rem;">Home</a>
+        <a href="requests.html" style="color: #6ee7b7; margin-right: 1.25rem;">Requests</a>
+        <a href="profile.html" style="color: #6ee7b7;">Profile</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/history.js"></script>
+</body>
+
+</html>

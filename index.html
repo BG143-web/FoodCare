@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodCare - Turn Surplus Food Into Someone's Meal</title>
+  <meta name="description" content="A community food rescue platform connecting restaurants, hotels, and households with surplus food to NGOs and seekers.">
+  <meta property="og:title" content="FoodCare - Surplus Food Rescue Platform">
+  <meta property="og:description" content="Connecting surplus food with local communities to reduce waste and fight hunger.">
+  <meta property="og:type" content="website">
+
+  <!-- Core & Responsive Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="FoodCare Home">
+        <div class="brand-icon">🌱</div>
+        <span class="brand-name">Food<span>Care</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#roles">Get Involved</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="donor-dashboard.html">Donor Portal</a></li>
+        <li><a href="seeker-dashboard.html">Find Food</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero-section section-padding" style="background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-page) 100%); border-bottom: 1px solid var(--border-light);">
+      <div class="container">
+        <div class="hero-grid" style="display: grid; grid-template-columns: 1.2fr 0.8fr; align-items: center; gap: 3.5rem;">
+          <div>
+            <span class="tagline" style="display: inline-block; color: var(--primary-green); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+              • Community Food Rescue Network
+            </span>
+            <h1 style="font-size: 2.75rem; margin-bottom: 1.25rem; line-height: 1.2; color: var(--heading-color);">
+              Turn Surplus Food Into <span style="color: var(--primary-green);">Someone's Meal</span>
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 540px;">
+              FoodCare bridges restaurants, hotels, bakeries, and households with local NGOs and community members who need food. Together, we eliminate edible food waste and combat hunger.
+            </p>
+            <div class="hero-actions" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <a href="donor-dashboard.html" class="btn btn-primary btn-lg">Donate Food</a>
+              <a href="seeker-dashboard.html" class="btn btn-outline btn-lg">Find Food</a>
+            </div>
+          </div>
+
+          <!-- Hero Graphic Card -->
+          <div>
+            <div class="card" style="padding: 2rem; border-color: var(--border-green); background-color: var(--primary-green-light); box-shadow: var(--shadow-md);">
+              <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="brand-icon" style="width: 48px; height: 48px; font-size: 1.5rem;">🍲</div>
+                <div>
+                  <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Live Surplus Food Hub</h3>
+                  <p style="font-size: 0.85rem; color: var(--forest-green); margin: 0;">Verified pickups ready near you</p>
+                </div>
+              </div>
+              
+              <div style="background-color: var(--bg-surface); border-radius: var(--radius-md); padding: 1.25rem; border: 1px solid var(--border-light); margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <strong style="color: var(--heading-color);">Green Leaf Bistro</strong>
+                  <span class="badge badge-available">Available</span>
+                </div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  25 Meals · Cooked Food · Pune
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                  Available until today 8:30 PM
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; color: var(--forest-green); font-weight: 600;">
+                <span>✓ Safe Hygiene Standard</span>
+                <span>✓ Zero Cost to Nonprofits</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Statistics Section -->
+    <section class="section-padding" style="background-color: var(--bg-surface); border-bottom: 1px solid var(--border-light);">
+      <div class="container">
+        <div class="section-header">
+          <span class="tagline">Our Collective Impact</span>
+          <h2>Saving Food, Supporting Communities</h2>
+          <p>Every donation makes an immediate difference for both people and the planet.</p>
+        </div>
+
+        <div class="hero-stats-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; text-align: center;">
+          <div class="card" style="padding: 2rem 1rem;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--primary-green); margin-bottom: 0.35rem;">28,400+</div>
+            <div style="font-weight: 600; color: var(--heading-color); margin-bottom: 0.25rem;">Meals Saved</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Nutritious food redirected</div>
+          </div>
+
+          <div class="card" style="padding: 2rem 1rem;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--primary-green); margin-bottom: 0.35rem;">450+</div>
+            <div style="font-weight: 600; color: var(--heading-color); margin-bottom: 0.25rem;">Food Donors</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Restaurants, caterers & homes</div>
+          </div>
+
+          <div class="card" style="padding: 2rem 1rem;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--primary-green); margin-bottom: 0.35rem;">890+</div>
+            <div style="font-weight: 600; color: var(--heading-color); margin-bottom: 0.25rem;">Food Seekers & NGOs</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Shelters & community kitchens</div>
+          </div>
+
+          <div class="card" style="padding: 2rem 1rem;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--primary-green); margin-bottom: 0.35rem;">14.2 Tons</div>
+            <div style="font-weight: 600; color: var(--heading-color); margin-bottom: 0.25rem;">Waste Diverted</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Kept out of landfills</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section-padding">
+      <div class="container">
+        <div class="section-header">
+          <span class="tagline">Simple 3-Step Process</span>
+          <h2>How FoodCare Works</h2>
+          <p>Streamlined logistics designed to move surplus food safely and quickly before it expires.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;" class="how-it-works-grid">
+          
+          <!-- Donor Flow Card -->
+          <div class="card" style="border-top: 4px solid var(--primary-green); padding: 2rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+              <span class="role-tag">For Donors</span>
+              <h3 style="margin: 0; font-size: 1.25rem;">Restaurants & Providers</h3>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div class="stat-icon" style="width: 38px; height: 38px; font-size: 1rem; flex-shrink: 0;">1</div>
+                <div>
+                  <h4 style="margin-bottom: 0.25rem;">Add Surplus Food</h4>
+                  <p style="font-size: 0.92rem; margin: 0;">Post details about leftover cooked meals, bakery items, or raw ingredients in seconds.</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div class="stat-icon" style="width: 38px; height: 38px; font-size: 1rem; flex-shrink: 0;">2</div>
+                <div>
+                  <h4 style="margin-bottom: 0.25rem;">Receive Request</h4>
+                  <p style="font-size: 0.92rem; margin: 0;">Nearby verified NGOs and community groups see your listing and request needed quantities.</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div class="stat-icon" style="width: 38px; height: 38px; font-size: 1rem; flex-shrink: 0;">3</div>
+                <div>
+                  <h4 style="margin-bottom: 0.25rem;">Hand Over Food</h4>
+                  <p style="font-size: 0.92rem; margin: 0;">Accept the request and coordinate quick pickup at your designated address.</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <a href="register.html?role=donor" class="btn btn-outline btn-block">Start Donating</a>
+            </div>
+          </div>
+
+          <!-- Food Seeker Flow Card -->
+          <div class="card" style="border-top: 4px solid #2563eb; padding: 2rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+              <span class="role-tag seeker">For Food Seekers</span>
+              <h3 style="margin: 0; font-size: 1.25rem;">NGOs & Communities</h3>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div class="stat-icon accepted" style="width: 38px; height: 38px; font-size: 1rem; flex-shrink: 0;">1</div>
+                <div>
+                  <h4 style="margin-bottom: 0.25rem;">Find Food</h4>
+                  <p style="font-size: 0.92rem; margin: 0;">Browse live listings categorized by cooked food, produce, bakery, and dairy in your neighborhood.</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div class="stat-icon accepted" style="width: 38px; height: 38px; font-size: 1rem; flex-shrink: 0;">2</div>
+                <div>
+                  <h4 style="margin-bottom: 0.25rem;">Request Food</h4>
+                  <p style="font-size: 0.92rem; margin: 0;">Select the exact portions your organization requires before the expiry window closes.</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div class="stat-icon accepted" style="width: 38px; height: 38px; font-size: 1rem; flex-shrink: 0;">3</div>
+                <div>
+                  <h4 style="margin-bottom: 0.25rem;">Collect Food</h4>
+                  <p style="font-size: 0.92rem; margin: 0;">Once accepted by the donor, pick up the items and distribute meals to those who need them.</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <a href="seeker-dashboard.html" class="btn btn-outline btn-block">Find Available Food</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- User Roles Section -->
+    <section id="roles" class="section-padding" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+      <div class="container">
+        <div class="section-header">
+          <span class="tagline">Choose Your Role</span>
+          <h2>Join the FoodCare Mission</h2>
+          <p>Whether you have surplus resources or serve hungry people, you belong in our network.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;" class="roles-grid">
+          
+          <div class="card" style="padding: 2.5rem; text-align: center;">
+            <div style="font-size: 2.75rem; margin-bottom: 1rem;">🏢</div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">DONOR</h3>
+            <p style="font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+              Have extra food? Help someone instead of wasting it. Perfect for restaurants, banquet halls, hotels, and caterers.
+            </p>
+            <a href="register.html?role=donor" class="btn btn-primary btn-lg">Become a Donor</a>
+          </div>
+
+          <div class="card" style="padding: 2.5rem; text-align: center;">
+            <div style="font-size: 2.75rem; margin-bottom: 1rem;">🤝</div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">FOOD SEEKER</h3>
+            <p style="font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+              Find available surplus food near you. Ideal for shelters, community pantries, NGOs, and individuals in need.
+            </p>
+            <a href="seeker-dashboard.html" class="btn btn-primary btn-lg">Find Food</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding">
+      <div class="container">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+          <span class="tagline" style="color: var(--primary-green); font-weight: 700; font-size: 0.875rem; text-transform: uppercase;">About FoodCare</span>
+          <h2 style="font-size: 2.25rem; margin: 0.75rem 0 1.25rem 0;">Bridging the Gap Between Surplus and Hunger</h2>
+          <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Globally, one-third of all food produced goes to waste, while hundreds of millions of people experience food insecurity. Decomposing food waste in landfills is also a primary contributor to greenhouse gas emissions.
+          </p>
+          <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 2rem;">
+            FoodCare is built on the philosophy that edible surplus is a valuable community resource. Through simple, transparent technology, we enable rapid coordination so that surplus food arrives on someone’s plate while it is fresh, hot, and dignified.
+          </p>
+          <div style="display: inline-flex; gap: 1rem;">
+            <a href="register.html" class="btn btn-primary">Join FoodCare Today</a>
+            <a href="login.html" class="btn btn-secondary">Sign In to Account</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo" style="margin-bottom: 1rem;">
+            <div class="brand-icon">🌱</div>
+            <span class="brand-name">Food<span>Care</span></span>
+          </div>
+          <p>
+            A dedicated community food waste management platform connecting surplus providers with local organizations to nourish communities.
+          </p>
+        </div>
+
+        <div>
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="donor-dashboard.html">Donor Dashboard</a></li>
+            <li><a href="seeker-dashboard.html">Seeker Dashboard</a></li>
+            <li><a href="history.html">Impact History</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>User Portals</h4>
+          <ul class="footer-links">
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Create Account</a></li>
+            <li><a href="requests.html">Track Requests</a></li>
+            <li><a href="profile.html">User Profile</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Contact & Support</h4>
+          <p>📍 National Food Rescue Initiative</p>
+          <p>📧 contact@foodcare-platform.org</p>
+          <p>📞 Helpline: +91 1800 233 4567</p>
+          <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 1rem;">Available 7 days a week for urgent food dispatches.</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 FoodCare Foundation. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#" style="color: #6ee7b7;">Privacy Policy</a>
+          <a href="#" style="color: #6ee7b7;">Terms of Service</a>
+          <a href="#" style="color: #6ee7b7;">Food Safety Standards</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/food.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

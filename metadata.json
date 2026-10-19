@@ -1,0 +1,6 @@
+{
+  "name": "FoodCare - Food Waste Management",
+  "description": "Connecting restaurants, hotels, and households with NGOs and seekers to turn surplus food into meals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
